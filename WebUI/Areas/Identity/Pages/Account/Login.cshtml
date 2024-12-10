@@ -1,0 +1,120 @@
+﻿@page
+@model LoginModel
+
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/mainLogin.css">
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/images/img-01.png" alt="Login Image">
+                </div>
+
+                <form class="login100-form validate-form" id="account" method="post">
+                    <span class="login100-form-title">
+                        Member Login
+                    </span>
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <!-- Email Input -->
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="Input.Email" placeholder="Email" required>
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                    <!-- Password Input -->
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="password" placeholder="Password" asp-for="Input.Password" required>
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                    <!-- Login Button -->
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+
+                    <!-- Forgot Password Link -->
+                    <div class="text-center p-t-12">
+                        <span class="txt1">Forgot</span>
+                        <a class="txt2" asp-page="./ForgotPassword">Username / Password?</a>
+                    </div>
+
+                    <!-- Back to Home Link -->
+                    <div class="text-center p-t-12">
+                        <span class="txt1">Back</span>
+                        <a class="txt2" href="/Customer/Home/Index">To Home</a>
+                    </div>
+
+                    <!-- Register Link -->
+                    <div class="text-center p-t-136">
+                        <a class="txt2" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">
+                            Create your Account
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        });
+    </script>
+
+    <!-- Custom Styling for icons hover effect -->
+    <style>
+        .symbol-input100 i {
+            transition: transform 0.3s ease, color 0.3s ease;
+            color: #007bff;
+        }
+
+            .symbol-input100 i:hover {
+                transform: scale(1.2);
+                color: #0056b3;
+            }
+    </style>
+
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Payment Successful";
+}
+
+<style>
+    body {
+        background-image: url('/images/payment-background.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .payment-success-container {
+        background-color: rgba(255, 255, 255, 0.85); /* Transparent white background */
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        margin: 50px auto;
+        text-align: center;
+    }
+
+    .payment-success-container h1 {
+        font-size: 3em;
+        color: #28a745;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .payment-success-container p.lead {
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .payment-success-container p {
+        font-size: 1em;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    .btn-home {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1.1em;
+        border-radius: 50px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-home:hover {
+        background-color: #0056b3;
+    }
+
+    .success-icon {
+        font-size: 4em;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="payment-success-container">
+    <i class="fas fa-check-circle success-icon"></i>
+    <h1>Payment Successful!</h1>
+    <p class="lead">Thank you for your purchase.</p>
+    <p>Your payment has been processed successfully.</p>
+    <a href="/Customer/Home" class="btn btn-home mt-4">
+        <i class="fas fa-home me-2"></i> Back to Home
+    </a>
+</div>

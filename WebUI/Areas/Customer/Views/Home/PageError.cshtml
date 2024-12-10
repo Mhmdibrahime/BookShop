@@ -1,0 +1,131 @@
+﻿@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Error 500 - Internal Server Error</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebUI.styles.css" asp-append-version="true" />
+
+    <style>
+        /* تحسينات عامة على الصفحة */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #007bff 50%, #17a2b8 100%);
+        }
+
+        .container-fluid {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-page {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+     
+
+        .error-page h1 {
+            font-size: 7rem;
+            font-weight: 900;
+            color: #dc3545;
+            transition: transform 0.3s;
+        }
+
+        .error-page h1:hover {
+            transform: scale(1.1);
+        }
+
+        .error-page h2 {
+            font-size: 3rem;
+            color: #343a40;
+            font-weight: bold;
+        }
+
+        .error-page h3 {
+            font-size: 1.5rem;
+            color: #6c757d;
+        }
+
+        .error-page-divider {
+            border-left: 4px solid #007bff;
+            padding-left: 20px;
+        }
+
+        .btn-primary {
+            padding: 12px 25px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center text-center error-page">
+                <div class="row flex-grow">
+                    <div class="col-lg-7 mx-auto">
+                        <div class="row align-items-center d-flex flex-row">
+                            <div class="col-lg-6 text-lg-right pr-lg-4">
+                                <h1 class="display-1">500</h1>
+                            </div>
+                            <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
+                                <h2>Oops!</h2>
+                                <h3>Something went wrong on our end.</h3>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-12 text-center mt-xl-2">
+                                <a href="/Customer/Home" class="btn btn-primary">Back to Home</a>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-12 mt-xl-2">
+                                <p class="copyright">Copyright &copy; 2024 All rights reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

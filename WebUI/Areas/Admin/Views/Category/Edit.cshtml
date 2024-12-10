@@ -1,0 +1,30 @@
+﻿@model CategoryUpdateVM
+
+@{
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Category";
+    ViewData["TitleView"] = "Edit Category";
+}
+
+<div class="col-lg-6">
+    <div class="card p-4">
+        <h3 class="mb-4 text-center">Edit Category</h3>
+        <form asp-action="Edit" method="post">
+            <div class="form-group mt-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <input asp-for="Id" type="hidden" />
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </div>
+        </form>
+    </div>
+</div>

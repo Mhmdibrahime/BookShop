@@ -1,0 +1,171 @@
+﻿@page
+@model RegisterModel
+
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+
+    <title>Register</title>
+
+
+    <link href="~/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+
+    <link href="~/https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+    <link href="~/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+
+    <link href="~/css/main.css" rel="stylesheet" media="all">
+    <link href="~/css/mainLogin.css" rel="stylesheet" media="all">
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+    <partial name="PartialToster" />
+
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+
+                <div class="card-body">
+
+                    <h2 class="title">Registration Form</h2>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert" style="padding-bottom:10px;color:red;"></div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.FirstName">first name</label>
+                                    <input class="input--style-4" asp-for="Input.FirstName" autocomplete="firstname" aria-required="true" required maxlength="20" />
+                                    <span asp-validation-for="Input.FirstName" class="text-danger" style="color:red;"></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.LastName">last name</label>
+                                    <input class="input--style-4" asp-for="Input.LastName" autocomplete="lastname" aria-required="true" aria-required="true" required maxlength="20">
+                                    <span asp-validation-for="Input.LastName" class="text-danger" style="color:red;"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.BirthDate">Birthday</label>
+                                    <div class="input-group-icon">
+                                        <input class="input--style-4 js-datepicker" asp-for="Input.BirthDate" autocomplete="birthdate" aria-required="true" required readonly>
+                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                        <span asp-validation-for="Input.BirthDate" class="text-danger" style="color:red;"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.Gender">Gender</label>
+                                    <div class="p-t-10">
+                                        <label class="radio-container m-r-45">
+                                            Male
+                                            <input type="radio" checked="checked" asp-for="Input.Gender" value="0" autocomplete="gender-male" aria-required="true">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-container">
+                                            Female
+                                            <input type="radio" asp-for="Input.Gender" value="1" autocomplete="gender-female" aria-required="true">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.Email">Email</label>
+                                    <input class="input--style-4" asp-for="Input.Email" autocomplete="email" aria-required="true" required>
+                                    <span asp-validation-for="Input.Email" class="text-danger" style="color:red;"></span>
+
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.PhoneNumber">Phone Number</label>
+                                    <input class="input--style-4" asp-for="Input.PhoneNumber" autocomplete="phoneNumber" aria-required="true" required maxlength="11" />
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger" style="color:red;"></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.Address">Address </label>
+                                    <input class="input--style-4" asp-for="Input.Address" autocomplete="address" aria-required="true" required maxlength="11" />
+                                    <span asp-validation-for="Input.Address" class="text-danger" style="color:red;"></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.Password">Password</label>
+                                    <input class="input--style-4" asp-for="Input.Password" autocomplete="password" aria-required="true" required maxlength="10">
+                                    <span asp-validation-for="Input.Password" class="text-danger" style="color:red;"></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                    <input class="input--style-4" asp-for="Input.ConfirmPassword" autocomplete="confirmPassword" aria-required="true" required maxlength="10">
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger" style="color:red;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-t-15" style="display: flex;justify-content: space-between;">
+                            <button id="registerSubmit" type="submit" class="btn btn--radius-2 btn--blue">Submit</button>
+                            <div>
+                                <a class="txt2" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" style="margin-right: 30px;font-size:15px ;">
+
+                                    Go to sign in
+                                    <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                                </a>
+                                <a class="txt2" href="/Customer/Home/Index" style="font-size:15px">
+                                    <i class="fa fa-long-arrow-left m-l-5" aria-hidden="true"></i>
+                                    Back Home
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/vendor/datepicker/moment.min.js"></script>
+    <script src="~/vendor/datepicker/daterangepicker.js"></script>
+    <script src="~/js/global.js"></script>
+
+</body>
+</html>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

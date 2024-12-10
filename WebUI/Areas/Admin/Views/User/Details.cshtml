@@ -1,0 +1,60 @@
+﻿@model UserVM
+@{
+    ViewData["Title"] = "User";
+    ViewData["TitleView"] = "Details User";
+    Layout = "_Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    
+    <dl class="row">
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.Id)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Id)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.Address)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Address)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.Gender)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Gender)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">@Html.DisplayNameFor(model => model.UserName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.UserName)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">Roles</dt>
+        <dd class="col-sm-9">@string.Join(", ", Model.Roles)</dd>
+        <hr class="my-2"> <!-- فاصل بين الصفوف -->
+
+        <dt class="col-sm-3 font-weight-bold">Profile Picture</dt>
+        <dd class="col-sm-9 text-center">
+            @if (Model.Image != null)
+            {
+                <img id="profilePicture" class="img-fluid rounded-circle shadow-sm border border-primary" style="width: 200px; height: 200px;" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(Model.Image))" />
+            }
+            else
+            {
+                <img id="profilePicture" class="img-fluid rounded-circle shadow-sm border border-primary" style="width: 200px; height: 200px;" alt="profile" src="~/images/user-photo.png" />
+            }
+        </dd>
+    </dl>
+
+    <div class="text-center mt-4">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning mx-2" })
+        <a class="btn btn-secondary mx-2" asp-action="Index">Back to List</a>
+    </div>
+</div>

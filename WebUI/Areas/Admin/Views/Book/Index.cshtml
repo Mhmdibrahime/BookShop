@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BookVM>
+@{
+    ViewData["Title"] = "Book";
+    ViewData["TitleView"] = "View Books";
+    Layout = "_Dashboard";
+}
+
+<!-- Parent Div to Control Layout -->
+<div class="container">
+    <div class="d-flex justify-content-end mb-4">
+        <a asp-action="Create" class="btn btn-primary">Create New Book</a>
+    </div>
+    <table id="mytable" style="width:100%" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section Scripts {
+    <script src="~/js/datatables/bookdtb.js"></script>
+}

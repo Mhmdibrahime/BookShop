@@ -1,0 +1,130 @@
+﻿<div class="nav-item dropdown ms-3 notification-icon" style="font-size: 20px;">
+    <a class="nav-link dropdown-toggle position-relative" id="notificationDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false" data-loaded="false">
+        <i class="bi bi-bell-fill text-light"></i>
+        <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle" id="notificationBadge" style="display: none; margin-top: 10px;">0</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end p-2 shadow" aria-labelledby="notificationDropdown" id="notificationMenu">
+        <li class="notification-item text-center text-muted" id="noNotificationsMessage">
+            There are no new notifications
+        </li>
+    </ul>
+</div>
+
+<style>
+    /* تصميم شارة الإشعارات */
+    .badge {
+        font-size: -1.2em;
+        padding: 4px 6px;
+    }
+
+    /* تصميم كل إشعار داخل القائمة */
+    .notification-item {
+        transition: background-color 0.3s ease-in-out;
+        padding: 10px;
+        font-size: 0.9em;
+        border-radius: 5px;
+    }
+
+    .notification-message {
+        position: relative;
+        cursor: pointer; /* Change the cursor to indicate hover */
+    }
+
+        .notification-message:hover::after {
+            content: attr(title); /* Use the title attribute for tooltip text */
+            position: absolute;
+            bottom: 100%; /* Position above the message */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 10;
+            font-size: 0.9em; /* Optional: Change the font size */
+            opacity: 0.8; /* Optional: Change the opacity */
+        }
+
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        loadNotifications();
+    });
+
+    function loadNotifications() {
+        const dropdown = document.getElementById('notificationDropdown');
+        const loaded = dropdown.getAttribute('data-loaded');
+
+        if (loaded === "false") {
+            fetch('/Customer/Home/GetNotifications')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const notificationMenu = document.getElementById('notificationMenu');
+                        notificationMenu.innerHTML = '';
+
+                        if (data.data.length > 0) {
+                            const notificationBadge = document.getElementById('notificationBadge');
+                            notificationBadge.textContent = data.data.length;
+                            notificationBadge.style.display = "inline";
+
+                            data.data.forEach(notification => {
+                                const listItem = document.createElement('li');
+                                listItem.classList.add('notification-item');
+
+                                // Limit message length to 5 words and format it accordingly
+                                const messageWords = notification.message.split(' ');
+                                const formattedMessage = messageWords.length > 5
+                                    ? messageWords.slice(0, 10).join(' ') + '...'
+                                    : notification.message;
+
+                                listItem.innerHTML = `
+                                    <a class="dropdown-item d-flex flex-column" href="#" onclick="markNotificationAsRead('${notification.id}', '/Identity/Account/Manage/Borrowing')">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <i class="bi bi-info-circle me-2 text-primary"></i>
+                                            <span><strong>${notification.bookName}</strong></span>
+                                        </div>
+                                        <p class="notification-message" title="${notification.message}">${formattedMessage}</p>
+                                        <small style="color:#868686">Sent: ${new Date(notification.createdAt).toLocaleString()}</small>
+                                    </a>
+                                `;
+                                notificationMenu.appendChild(listItem);
+                                notificationMenu.appendChild(document.createElement('hr')).classList.add('dropdown-divider');
+                            });
+
+                        } else {
+                            const notificationBadge = document.getElementById('notificationBadge');
+                            notificationBadge.textContent = 0;
+                            notificationBadge.style.display = "inline";
+                            notificationMenu.innerHTML = `<li class="notification-item text-center text-muted">There are no new notifications</li>`;
+                        }
+                        dropdown.setAttribute('data-loaded', 'true');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                });
+        }
+    }
+    function markNotificationAsRead(notificationId, redirectUrl) {
+        // إرسال طلب AJAX لتحديث حالة الإشعار إلى مقروء
+        fetch(`/Customer/Home/MarkNotificationAsRead?notificationId=${notificationId}`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // التوجيه إلى الصفحة المطلوبة بعد تحديث الإشعار
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error('Failed to mark notification as read.');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+            });
+    }
+</script>

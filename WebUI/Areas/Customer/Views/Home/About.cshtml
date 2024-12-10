@@ -1,0 +1,363 @@
+﻿@using Entities.Domains
+@using Entities.Repositories
+@inject IUnitOfWork unitOfWork
+
+@{
+    Layout = "_User";
+
+    ViewBag.borrowins = unitOfWork.GetRepository<BorrowinTransaction>()
+        .GetAllAsync(x => x.Status == "Borrowed" || x.Status == "Expired")
+        .GetAwaiter().GetResult()
+        .ToList()
+        .Count();
+    ViewBag.books = unitOfWork
+        .GetRepository<Book>()
+        .GetAllAsync()
+        .GetAwaiter()
+        .GetResult()
+        .ToList()
+        .Count();
+    int value = unitOfWork.GetRepository<User>()
+        .GetAllAsync(x=>x.IsDeleted == false)
+        .GetAwaiter()
+        .GetResult()
+        .ToList()
+        .Count();
+    value--;
+    ViewBag.users = value;
+}
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .about-us {
+        background: linear-gradient(to right, #f4f6f9, #e1e5ee);
+        padding: 60px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .about-us h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-us .content-section {
+            padding: 40px;
+            background-color: #fff;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin: 0 auto;
+            max-width: 800px;
+            transition: transform 0.3s;
+        }
+
+            .about-us .content-section:hover {
+                transform: translateY(-5px);
+            }
+
+            .about-us .content-section h2 {
+                font-size: 2.2rem;
+                color: #4e54c8;
+                margin-bottom: 20px;
+                text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            }
+
+        .about-us p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+    .team-section {
+        background-color: #e9ecef;
+        padding: 60px 0;
+        text-align: center;
+    }
+
+        .team-section h2 {
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .team-section .team-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .team-section .team-card img {
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                margin-bottom: 15px;
+                border: 2px solid #4e54c8;
+                transition: transform 0.3s;
+            }
+
+            .team-section .team-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            }
+
+                .team-section .team-card:hover img {
+                    transform: scale(1.1);
+                }
+
+    .testimonials {
+        background-color: #4e54c8;
+        padding: 60px 0;
+        text-align: center;
+        color: white;
+    }
+
+        .testimonials h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+    .testimonial-card {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        max-width: 600px;
+        margin-bottom: 30px;
+        transition: transform 0.2s;
+    }
+
+        .testimonial-card:hover {
+            transform: scale(1.05);
+        }
+
+    .statistics {
+        background-color: #e9ecef;
+        padding: 60px 0;
+        text-align: center;
+    }
+
+        .statistics h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+    .statistic-item {
+        font-size: 1.5rem;
+        color: #4e54c8;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .statistic-item::before {
+            content: "📊";
+            margin-right: 10px;
+        }
+
+    .btn-primary {
+        background-color: #4e54c8;
+        border-color: #4e54c8;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        margin-top: 30px;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #333;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .team-section h2 {
+        font-size: 2.5rem;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .team-card {
+        background-color: #ffffff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+    }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+    .team-photo {
+        width: 100px;
+        height: 100px;
+        border: 3px solid #007bff;
+        padding: 5px;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .social-icon {
+        color: #007bff;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+        .social-icon:hover {
+            color: #0056b3;
+        }
+</style>
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Library Management System</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Discover your favorite books</p>
+        </div>
+    </div>
+</header>
+<section class="about-us">
+    <div class="container">
+        <h1>About Us</h1>
+        <div class="content-section">
+            <h2>Our Mission</h2>
+            <p>At Library Management System, our mission is to streamline the management of library resources, ensuring that users have easy access to a vast array of books and materials. We aim to foster a love for reading and learning within our community.</p>
+            <h2>What We Do</h2>
+            <p>We provide an intuitive platform for managing library operations, including book cataloging, user management, and borrowing processes. Our system is designed to enhance the user experience for both librarians and patrons.</p>
+        </div>
+        <a href="/Identity/Account/Register" class="btn-primary" style="margin-left: 580px;">Join Us Now</a>
+    </div>
+</section>
+
+<section class="team-section py-5">
+    <div class="container text-center">
+        <h2 class="mb-5">Meet the Team</h2>
+        <div class="row">
+            <!-- Team Member 1 -->
+            <div class="col-lg-4 mb-4">
+                <div class="team-card p-4 shadow-sm rounded">
+                    <img src="~/covers/default/00_image.jpg" alt="Elsyed Farag" class="team-photo rounded-circle mb-3">
+                    <h5>Elsayed Farag</h5>
+                    <p>Lead Developer and System Architect</p>
+                    <div class="social-links mt-3">
+                        <a href="https://www.linkedin.com/in/elsyedfarag" target="_blank" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://twitter.com/Elsayedfara9" target="_blank" class="social-icon"><i class="bi bi-twitter"></i></a>
+                        <a href="https://github.com/elsyedfarag" target="_blank" class="social-icon"><i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Team Member 2 -->
+            <div class="col-lg-4 mb-4">
+                <div class="team-card p-4 shadow-sm rounded">
+                    <img src="~/covers/default/mohamed.jpg" alt="Jane Doe" class="team-photo rounded-circle mb-3">
+                    <h5>Mohamed Ibrahim</h5>
+                    <p>
+                        Backend Developer
+                    </p>
+                    <div class="social-links mt-3">
+                        <a href="https://www.linkedin.com/in/janedoe" target="_blank" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://twitter.com/janedoe" target="_blank" class="social-icon"><i class="bi bi-twitter"></i></a>
+                        <a href="https://dribbble.com/janedoe" target="_blank" class="social-icon"><i class="bi bi-dribbble"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Team Member 3 -->
+            <div class="col-lg-4 mb-4">
+                <div class="team-card p-4 shadow-sm rounded">
+                    <img src="~/covers/default/mostafa.jpg" alt="John Smith" class="team-photo rounded-circle mb-3">
+                    <h5>Mostafa Elgendy</h5>
+                    <p>Backend Developer</p>
+                    <div class="social-links mt-3">
+                        <a href="https://www.linkedin.com/in/johnsmith" target="_blank" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://twitter.com/johnsmith" target="_blank" class="social-icon"><i class="bi bi-twitter"></i></a>
+                        <a href="https://github.com/johnsmith" target="_blank" class="social-icon"><i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="statistics py-5">
+    <div class="container text-center">
+        <h2 class="mb-5">Library Statistics</h2>
+        <div class="row">
+            <!-- Total Books -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="statistic-card shadow-sm p-4 rounded">
+                    <div class="stat-icon mb-3">📚</div>
+                    <h5>Total Books</h5>
+                    <p class="stat-number">@ViewBag.books</p>
+                </div>
+            </div>
+            <!-- Total Users -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="statistic-card shadow-sm p-4 rounded">
+                    <div class="stat-icon mb-3">👥</div>
+                    <h5>Total Users</h5>
+                    <p class="stat-number">@ViewBag.users</p>
+                </div>
+            </div>
+            <!-- Total Borrowed -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="statistic-card shadow-sm p-4 rounded">
+                    <div class="stat-icon mb-3">📖</div>
+                    <h5>Total Borrowed</h5>
+                    <p class="stat-number">@ViewBag.borrowins</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .statistics h2 {
+        font-size: 2.5rem;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .statistic-card {
+        background-color: #ffffff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .statistic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        color: #007bff;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+        color: #333;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+</style>
+

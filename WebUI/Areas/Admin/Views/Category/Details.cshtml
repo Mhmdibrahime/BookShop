@@ -1,0 +1,97 @@
+﻿@model Services.CategoryServices.CategoryViewModels.CategoryVM
+
+@{
+    ViewData["Title"] = "Category";
+    ViewData["TitleView"] = "Details Category";
+    Layout = "_Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="card border-0 shadow-lg">
+    
+        <div class="card-body p-4">
+            <dl class="row align-items-center">
+                <dt class="col-sm-3 text-muted">
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </dt>
+                <dd class="col-sm-9">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.CreatedAt)</span>
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    @Html.DisplayNameFor(model => model.UpdatedAt)
+                </dt>
+                <dd class="col-sm-9">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.UpdatedAt)</span>
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd class="col-sm-9">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.Id)</span>
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.Name)</span>
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-9">
+                    <span class="font-weight-bold">@Html.DisplayFor(model => model.Description)</span>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="card-footer bg-light d-flex justify-content-center py-3">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-outline-primary mx-2 px-4 shadow-sm" })
+            <a asp-action="Index" class="btn btn-outline-secondary mx-2 px-4 shadow-sm">Back to List</a>
+        </div>
+    </div>
+</div>
+
+<!-- Optional Custom CSS for Extra Polish -->
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #007bff 0%, #0062cc 100%);
+    }
+
+    dl.row dt {
+        text-transform: capitalize;
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .font-weight-bold {
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    .card-footer {
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
+
+    .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+    }
+</style>

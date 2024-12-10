@@ -1,0 +1,108 @@
+﻿@model UserVM
+@inject RoleManager<IdentityRole> _roleManager;
+@{
+    ViewData["Title"] = "User";
+    ViewData["TitleView"] = "Edit User";
+    Layout = "_Dashboard";
+}
+
+
+<hr class="mb-4" />
+<form asp-action="Edit" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-lg">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="UserName" class="form-label">Username</label>
+                <input asp-for="UserName" class="form-control" placeholder="Enter username" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Enter email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="form-label">Full Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter full name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" placeholder="Enter address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control" type="tel" placeholder="Enter phone number" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Gender</label>
+                <div class="d-flex align-items-center">
+                    @Html.RadioButtonFor(m => m.Gender, "Male", new { id = "maleOption", @class = "form-check-input me-2" })
+                    <label class="form-check-label me-4" for="maleOption">Male</label>
+                    @Html.RadioButtonFor(m => m.Gender, "Female", new { id = "femaleOption", @class = "form-check-input me-2" })
+                    <label class="form-check-label" for="femaleOption">Female</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary w-100" />
+                <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Back to List</a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group text-center mb-3">
+                <label asp-for="@Model.Image" class="form-label">Profile Picture</label>
+                @if (Model.Image != null)
+                {
+                    <img id="profilePicture" alt="profile" class="profile-picture rounded-circle mb-3 border border-primary" width="250" height="295" src="data:image/*;base64,@(Convert.ToBase64String(Model.Image))" />
+                }
+                else
+                {
+                    <img id="profilePicture" alt="profile" class="profile-picture rounded-circle mb-3 border border-primary" width="250" height="295" src="~/images/user-photo.png" />
+                }
+                <div class="custom-file">
+                    <input type="file" accept="image/*" asp-for="@Model.Image" class="form-control" onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="@Model.Image" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Roles</label>
+                <div class="border p-3 rounded" style="max-height: 200px; overflow-y: auto;">
+                    @{
+                        var rolesUser = Model.Roles; // قائمة أدوار المستخدم
+                    }
+                    @foreach (var identityRole in _roleManager.Roles)
+                    {
+                        bool isChecked = rolesUser.Contains(identityRole.Name);
+                        <div class="form-check" style="margin-left:40px">
+                            <input class="form-check-input" type="checkbox"
+                                   name="Roles"
+                                   value="@identityRole.Name"
+                                   id="role_@identityRole.Name"
+                            @(isChecked ? "checked" : "") />
+                            <label class="form-check-label" for="role_@identityRole.Name">@identityRole.Name</label>
+                        </div>
+                    }
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

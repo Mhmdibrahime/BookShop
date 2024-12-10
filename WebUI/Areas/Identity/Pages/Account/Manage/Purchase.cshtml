@@ -1,0 +1,90 @@
+﻿@page
+@model WebUI.Areas.Identity.Pages.Account.Manage.PurchaseModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Purchase;
+    Layout = "_Layout.cshtml";
+}
+<style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #e9ecef;
+    }
+
+    .badge-quantity {
+        background-color: #ffc107;
+        color: #343a40;
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 0.2rem 0.6rem;
+        margin-left: 10px;
+        font-size: 0.9rem;
+    }
+</style>
+<head>
+    <link href="~/css/purchase.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMC3d/v28s2D/1l7/V/+X/b4cHPrVjB3j/gcE8" crossorigin="anonymous">
+</head>
+<div id="Purchases" class="tabcontent active">
+    <h3 class="purchase-title">Purchase History</h3>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="purchase-list">
+        @foreach (var item in Model.purchaseTransactions)
+        {
+            <div class="purchase-item" data-purchase-date="@item.PurchaseTransaction.PurchaseDate.ToString("yyyyMMdd")" data-price="@item.PurchaseTransaction.Price" data-title="@item.PurchaseTransaction.Book.Title.ToLower()">
+                <div class="book-cover-container">
+                    <img src="~/covers/@(item.PurchaseTransaction.Book.Cover ?? "default/banner-image.png")" alt="Book Cover" class="book-cover">
+                </div>
+                <div class="book-details">
+                    <h4 class="book-title">@item.PurchaseTransaction.Book.Title</h4>
+                    <p class="purchase-date"><i class="far fa-calendar-alt"></i> @item.PurchaseTransaction.PurchaseDate.ToString("dd MMM yyyy")</p>
+                    <p class="book-price"><i class="fas fa-tag"></i> $@item.PurchaseTransaction.Price</p>
+                    Qu: <span class="badge badge-quantity">@item.PurchaseTransaction.Quantity</span>
+
+
+                    <form method="post" asp-page-handler="SubmitRating">
+                        <div class="stars" data-bookid="@item.PurchaseTransaction.BookId">
+                            <input type="radio" id="star5_@item.PurchaseTransaction.BookId" name="rating_@item.PurchaseTransaction.BookId" value="5" />
+                            <label for="star5_@item.PurchaseTransaction.BookId" title="5 stars">&#9733;</label>
+                            <input type="radio" id="star4_@item.PurchaseTransaction.BookId" name="rating_@item.PurchaseTransaction.BookId" value="4" />
+                            <label for="star4_@item.PurchaseTransaction.BookId" title="4 stars">&#9733;</label>
+                            <input type="radio" id="star3_@item.PurchaseTransaction.BookId" name="rating_@item.PurchaseTransaction.BookId" value="3" />
+                            <label for="star3_@item.PurchaseTransaction.BookId" title="3 stars">&#9733;</label>
+                            <input type="radio" id="star2_@item.PurchaseTransaction.BookId" name="rating_@item.PurchaseTransaction.BookId" value="2" />
+                            <label for="star2_@item.PurchaseTransaction.BookId" title="2 stars">&#9733;</label>
+                            <input type="radio" id="star1_@item.PurchaseTransaction.BookId" name="rating_@item.PurchaseTransaction.BookId" value="1" />
+                            <label for="star1_@item.PurchaseTransaction.BookId" title="1 star">&#9733;</label>
+                        </div>
+                        <button type="submit" class="btn_submit_rating"> <i class="fas fa-star"></i> Submit Rating</button>
+                    </form>
+                   
+                    <form method="post" asp-page-handler="Purache" asp-route-id="@item.PurchaseTransaction.BookId">
+
+                        <div>
+                            <button type="submit" class="btn_All"><i class="fas fa-shopping-cart"></i> Repurchase</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-warning d-flex align-items-center mb-3">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="bi-star-fill @(i <= item.Rate ? "text-warning" : "text-muted")"></i>
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // أضف أي سكربتات إضافية تحتاجها هنا
+    </script>
+}

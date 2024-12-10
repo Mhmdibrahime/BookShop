@@ -1,0 +1,94 @@
+﻿@using Entities.Domains
+@using WebUI.Commponents
+@inject SignInManager<User> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<style>
+    .nav-pills .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        border-radius: 25px;
+        color: #495057;
+        transition: all 0.3s;
+        margin: 10px 0;
+        padding: 10px 20px;
+        text-align: center;
+        font-weight: bold;
+        position: relative; /* For the icon positioning */
+    }
+
+        .nav-pills .nav-link.active,
+        .nav-pills .nav-link:hover {
+            background-color: #6c63ff;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        }
+
+    .nav-pills .nav-link {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-icon {
+        margin-right: 12px; /* Slightly increased margin for better spacing */
+        font-size: 20px; /* Increased font size for better visibility */
+        color: #495057; /* Match icon color with text color */
+        transition: color 0.3s; /* Smooth color transition */
+    }
+
+    .nav-pills .nav-link:hover .nav-icon {
+        color: #ffffff; /* Change icon color on hover */
+    }
+
+    #external-login {
+        color: #ff4081;
+    }
+</style>
+
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
+            <i class="nav-icon fas fa-user-circle"></i> Profile
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">
+            <i class="nav-icon fas fa-envelope"></i> Email
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
+            <i class="nav-icon fas fa-key"></i> Password
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.PurchaseNavClass(ViewContext)" id="purchase-history" asp-page="./Purchase">
+            <i class="nav-icon fas fa-shopping-cart"></i> Purchase History
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.BorrowingNavClass(ViewContext)" id="borrowing-history" asp-page="./Borrowing">
+            <i class="nav-icon fas fa-book"></i> Borrowing History
+        </a>
+    </li>
+    @if (User.IsInRole(RoleConst.AdminRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link" style="margin-top: 15px; background-color:#6c757d; color: #ffffff;" id="admin-panel" href="/Admin/Dashboard/Index">
+                <i class="nav-icon fas fa-tools"></i> Admin Panel
+            </a>
+        </li>
+    }
+
+    @if (hasExternalLogins)
+    {
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login" asp-page="./ExternalLogins">
+                <i class="nav-icon fas fa-external-link-alt"></i> External Logins
+            </a>
+        </li>
+    }
+</ul>

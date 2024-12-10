@@ -1,0 +1,119 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Access Denied</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .access-denied-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            animation: slideIn 1s ease-out forwards;
+            position: relative;
+            z-index: 2;
+        }
+
+        .access-denied-container h1 {
+            font-size: 3.5rem;
+            color: #ff5e5e;
+            margin-bottom: 20px;
+        }
+
+        .access-denied-container p {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: #f1f1f1;
+        }
+
+        .access-denied-container .btn {
+            background-color: #ff416c;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.2rem;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .access-denied-container .btn:hover {
+            background-color: #ff6b81;
+            transform: translateY(-5px);
+        }
+
+        .access-denied-icon {
+            font-size: 6rem;
+            color: #ff5e5e;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        
+
+        /* Add floating background elements for more depth */
+        .floating-shape {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+        }
+
+        .floating-shape:nth-child(2) {
+            bottom: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+        }
+
+    
+    </style>
+</head>
+<body>
+    <!-- Floating shapes for visual interest -->
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+
+    <div class="access-denied-container">
+        <i class="bi bi-x-circle-fill access-denied-icon"></i>
+        <h1>@ViewData["Title"]</h1>
+        <p>You do not have access to this resource. Please contact support if you believe this is a mistake.</p>
+        <a href="/" class="btn">Return to Home</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+﻿@page
+@model WebUI.Areas.Identity.Pages.Account.Manage.BorrowingModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Borrowing;
+    Layout = "_Layout.cshtml";
+}
+<style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #e9ecef;
+    }
+    .tabcontent {
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        transition: transform 0.3s ease;
+    }
+
+    .borrowing-title {
+        font-size: 32px;
+        margin-bottom: 25px;
+        color: #0056b3;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .filter-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-filter {
+        padding: 10px 20px;
+        margin: 0 10px;
+        background: #007bff;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-filter:hover {
+            background-color: #0056b3;
+        }
+
+    .borrowing-list {
+        max-height: 500px;
+        overflow-y: auto;
+        margin-bottom: 25px;
+        padding-right: 10px;
+    }
+
+        .borrowing-list::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .borrowing-list::-webkit-scrollbar-track {
+            background: #e0e0e0;
+        }
+
+        .borrowing-list::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 10px;
+        }
+
+    .borrowing-item {
+        display: flex;
+        align-items: flex-start;
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #d9e2ec;
+        border-radius: 12px;
+        background-color: #fdfdfd;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+    }
+
+        .borrowing-item.overdue {
+            border: 1px solid #ff0000;
+            background-color: #ffe6e6;
+        }
+
+        .borrowing-item.expired {
+            border: 1px solid #ffcc00;
+            background-color: #fff8e1;
+        }
+
+        .borrowing-item.active {
+            border: 1px solid #28a745;
+            background-color: #e6f5e6;
+        }
+
+    .book-cover-container {
+        width: 120px;
+        height: 180px;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .book-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .book-cover-container:hover .book-cover {
+        transform: scale(1.08);
+    }
+
+    .book-details {
+        flex-grow: 1;
+        padding-left: 20px;
+    }
+
+    .badge-quantity {
+        background-color: #ffc107;
+        color: #343a40;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 0.4rem 0.8rem;
+        font-size: 1.1rem;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 35px;
+        min-height: 35px;
+        margin-left: 8px;
+    }
+
+    .book-details .badge-quantity-container {
+        display: flex;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .quantity-label {
+        font-size: 16px;
+        color: #555;
+        margin-right: 8px;
+        font-weight: bold;
+    }
+
+    .book-title {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+
+    .borrow-date,
+    .return-date,
+    .book-price,
+    .status {
+        font-size: 16px;
+        color: #555;
+        margin: 3px 0;
+    }
+
+    .fine-alert {
+        font-size: 16px;
+        color: #dc3545;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+
+        .fine-alert i {
+            margin-right: 5px;
+        }
+
+    .btn_All {
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn_All:hover {
+            background-color: #218838;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+    .overdue-marker,
+    .overdue-marker-blue {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .overdue-marker {
+        background-color: rgba(255, 0, 0, 0.7);
+    }
+
+    .overdue-marker-blue {
+        background-color: rgba(0, 123, 255, 0.7);
+    }
+</style>
+
+<div id="Borrowings" class="tabcontent" style="margin-bottom: 50px;">
+    <h3 class="borrowing-title">Borrowing History</h3>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- أزرار الفلترة -->
+    <div class="filter-buttons">
+        <button class="btn-filter" onclick="filterItems('All')">All</button>
+        <button class="btn-filter" onclick="filterItems('Overdue')">Overdue</button>
+        <button class="btn-filter" onclick="filterItems('Expired')">Expired</button>
+        <button class="btn-filter" onclick="filterItems('Active')">Active</button>
+    </div>
+
+    <div class="borrowing-list">
+        @foreach (var item in Model.borrowinTransactions)
+        {
+            var itemStatusClass = item.FineAmount != 0 || item.Status == "Fine"? "Overdue" : item.Status == "Expired" ? "Expired" : "Active";
+
+            <form method="post" asp-page-handler="Renew" asp-route-id="@item.BookId" class="borrowing-item-container @itemStatusClass">
+                <div class="borrowing-item @(itemStatusClass.ToLower())">
+                    <div class="book-cover-container">
+                        <img src="~/covers/@(item.Book.Cover ?? "default/banner-image.png")" alt="Book Cover" class="book-cover">
+
+                        @if (item.FineAmount != 0 || item.Status == "Fine")
+                        {
+                            <div class="overdue-marker">Overdue</div>
+                        }
+                        @if (item.Status == "Expired")
+                        {
+                            <div class="overdue-marker-blue">Expired</div>
+                        }
+                    </div>
+                    <div class="book-details">
+                        <h4 class="book-title">@item.Book.Title</h4>
+                        <p class="borrow-date">Borrow Date: <span>@item.BorrowDate.ToString("dd MMM yyyy")</span></p>
+                        <p class="return-date">Return Date: <span>@item.ReturnDate.ToString("dd MMM yyyy")</span></p>
+                        <p class="book-price">Price: <span>$@item.Price</span></p>
+                        <p class="status">Status: <span>@item.Status</span></p>
+                        <!-- Quantity Display with Label -->
+                        <div class="badge-quantity-container">
+                            <span class="quantity-label">Quantity:</span>
+                            <span class="badge badge-quantity">@item.Count</span>
+                        </div>
+
+
+                        @if (item.FineAmount != 0)
+                        {
+                            <p class="fine-alert">
+                                <i class="fas fa-exclamation-triangle"></i> Fine: <span>$@item.FineAmount</span>
+                            </p>
+                        }
+
+                        <button type="submit" class="btn_All renew-button" style="margin-top: 10px;">
+                            <i class="fas fa-redo-alt"></i> Renew Borrowing
+                        </button>
+                    </div>
+                </div>
+            </form>
+        }
+
+    </div>
+</div>
+
+<script>
+    function filterItems(status) {
+        const items = document.querySelectorAll('.borrowing-item-container');
+        items.forEach(item => {
+            // تحديد الفئات بناءً على الحالة
+            const isOverdue = item.classList.contains('Overdue');
+            const isExpired = item.classList.contains('Expired');
+            const isActive = item.classList.contains('Active');
+
+            // عرض أو إخفاء العناصر بناءً على الفلتر المحدد
+            if (status === 'All' ||
+                (status === 'Overdue' && isOverdue) ||
+                (status === 'Expired' && isExpired) ||
+                (status === 'Active' && isActive)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>

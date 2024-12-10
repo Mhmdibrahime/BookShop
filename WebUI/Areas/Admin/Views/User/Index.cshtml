@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "User";
+    ViewData["TitleView"] = "View Users";
+    Layout = "_Dashboard";
+}
+
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+
+<table id="mytable" style="width:100%" class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                UserName
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Is Lock
+            </th>
+            
+
+            <th></th>
+        </tr>
+    </thead>
+</table>
+@section Scripts {
+    <script src="~/js/datatables/userdtb.js"></script>
+}

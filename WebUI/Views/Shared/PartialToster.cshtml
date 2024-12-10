@@ -1,0 +1,74 @@
+﻿@{
+
+    if (TempData["SuccessRegister"] != null)
+    {
+      <script src="~/lib/jquery/dist/jquery.min.js"></script>
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script type="text/javascript">
+           $(document).ready(function () {
+               Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Your account created successfully",
+                  showConfirmButton: false,
+                  timer: 1700
+            });
+          });
+       </script>
+    }
+    if (TempData["NotificationSuccess"] != null)
+    {
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            toastr["success"]("The role created successfully")
+        </script>
+    }
+    if (TempData["NotificationError"] != null)
+    {
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            toastr["warning"]("The role already exists!")
+        </script>
+    }
+    if (TempData["EditRole"] != null)
+    {
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            toastr["success"]("The role has been modified successfully")
+        </script>
+    }
+
+    if (TempData["purchaseProcess"] != null)
+    {
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            toastr["info"]("Order Status Processing Successfully")
+        </script>
+    }
+    if (TempData["purchaseShip"] != null)
+    {
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            toastr["success"]("Order Status Shipping Successfully")
+        </script>
+    }
+    if (TempData["OrderCancel"] != null)
+    {
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            toastr["success"]("Order Status Cancelled Successfully")
+        </script>
+    }
+  
+}

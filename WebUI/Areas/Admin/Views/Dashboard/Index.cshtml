@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "Dashbord";
+    ViewData["TitleView"] = "Management";
+    Layout = "_Dashboard";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+           <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-primary">
+                <div class="inner">
+                    <h3>@ViewBag.loans</h3>
+                    <p>All Loans</p>
+                </div>
+                <div class="icon">
+                        <i class="ion ion-ios-book"></i>
+                    </div>
+                <a href="/Admin/Borrowin/Index" class="small-box-footer">
+                    More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@ViewBag.purchase</h3>
+                        <p>New Purchase</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="/Admin/Purchase/Index" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@ViewBag.purchases</h3>
+                        <p>All Purchases</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/Admin/Purchase/Index" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@ViewBag.books</h3>
+                        <p>All Books</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Admin/Book/Index" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@ViewBag.users</h3>
+                        <p>User Registrations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/Admin/User/Index" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+    </div>
+</section>
+
+<!-- CSS Styling -->
+<style>
+    .small-box {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .small-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .small-box-footer {
+        color: #fff;
+        background-color: #007bff;
+        padding: 10px;
+        display: inline-block;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .small-box-footer:hover {
+        background-color: #0056b3;
+    }
+
+    .icon i {
+        font-size: 60px;
+        color: rgba(255, 255, 255, 0.8);
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .small-box .inner h3 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 38px;
+    }
+
+    .small-box .inner p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    
+</style>

@@ -1,0 +1,187 @@
+﻿@model BookCreateVM
+
+@{
+    ViewBag.Title = "Book";
+    ViewData["TitleView"] = "Add Book";
+    Layout = "_Dashboard";
+}
+
+<div class="col-lg-8 mx-auto">
+    <div class="card card-primary shadow-lg rounded">
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data" method="post">
+
+                <div class="form-group mt-3">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter Title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Enter Description" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="ISBN" class="form-label">ISBN</label>
+                    <input asp-for="ISBN" class="form-control" placeholder="Enter ISBN" />
+                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="PublishedYear" class="form-label">Published Year</label>
+                    <input asp-for="PublishedYear" class="form-control" type="number" placeholder="Enter Published Year"  min="2000"/>
+                    <span asp-validation-for="PublishedYear" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="SalePrice" class="form-label">Sale Price</label>
+                    <input asp-for="SalePrice" class="form-control" type="number" step="0.01" placeholder="Enter Sale Price" min="0" />
+                    <span asp-validation-for="SalePrice" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="RentPrice" class="form-label">Rent Price</label>
+                    <input asp-for="RentPrice" class="form-control" type="number" step="0.01" placeholder="Enter Rent Price" min="0" />
+                    <span asp-validation-for="RentPrice" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="Stock" class="form-label">Stock</label>
+                    <input asp-for="Stock" class="form-control" type="number" placeholder="Enter Stock" min="0"/>
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="Cover" class="form-label">Cover Image</label>
+                    <img id="coverImagePreview" class="img-fluid mt-3" style="display: none; width:200px; height: 200px;" />
+                    <input asp-for="Cover" name="coverFile" type="file" class="form-control" id="coverImageInput" accept="image/*" />
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId" class="form-control">
+                        <option disabled>Select Category</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="PublisherId" class="form-label">Publisher</label>
+                    <select asp-for="PublisherId" class="form-control">
+                        <option disabled>Select Publisher</option>
+                        @foreach (var publisher in Model.Publishers)
+                        {
+                            <option value="@publisher.Id">@publisher.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PublisherId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="AuthorId" class="form-label">Authors</label>
+                    <select asp-for="AuthorId" class="form-control">
+                        <option disabled>Select Authors</option>
+                        @foreach (var author in Model.Authors)
+                        {
+                            <option value="@author.Id">@author.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                    <a href="/Admin/Book" class="btn btn-secondary btn-lg">Back</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('coverImageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const preview = document.getElementById('coverImagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                const preview = document.getElementById('coverImagePreview');
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+}
+
+<style>
+    body {
+        background-color: #f5f6fa; /* لون خلفية هادئ */
+    }
+
+    .card {
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* ظل خفيف للبطاقة */
+    }
+
+    h2 {
+        color: #333;
+        font-family: 'Poppins', sans-serif; /* خط عصري */
+        font-weight: 600;
+    }
+
+    .form-label {
+        color: #444;
+        font-weight: 500;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.1);
+        }
+
+    .btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+</style>

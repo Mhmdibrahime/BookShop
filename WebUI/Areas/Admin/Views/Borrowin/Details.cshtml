@@ -1,0 +1,230 @@
+﻿@using Entities.Domains
+@model BorrowinTransaction
+
+@{
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Borrowin";
+    ViewData["TitleView"] = "Borrowing Details";
+}
+
+<!-- Custom CSS Styling -->
+<style>
+    .content {
+        background-color: #f4f6f9;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+
+
+
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+
+
+    
+    .badge {
+        font-size: 14px;
+        padding: 8px 12px;
+        font-weight: 500;
+    }
+
+    .badge-red {
+        background-color: red;
+        color: white; /* اختياري: لتحديد لون النص */
+    }
+
+    .badge-blue {
+        background-color: blue;
+        color: white; /* اختياري: لتحديد لون النص */
+    }
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .badge-dark {
+        background-color: #ccc9c8;
+        color: #212529;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="card-title">Borrowing Details</h3>
+                        <i class="fas fa-book-reader fa-2x"></i>
+                    </div>
+                    <div class="card-body">
+                        <!-- Borrower Information -->
+                        <h4 class="mb-4">
+                            <i class="fas fa-user"></i> Borrower Information
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> @Model.User.FullName</p>
+                                <p><strong>Email:</strong> @Model.User.Email</p>
+                                <p><strong>ID:</strong> @Model.User.Id</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Phone:</strong> @Model.User.PhoneNumber</p>
+                                <p><strong>Membership ID:</strong> @Model.User.Id</p>
+                            </div>
+                        </div>
+
+                        <!-- Book Information -->
+                        <h4 class="mt-5 mb-4">
+                            <i class="fas fa-book"></i> Book Information
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Book Title:</strong> @Model.Book.Title</p>
+                                <p><strong>ISBN:</strong> @Model.Book.ISBN</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Category:</strong> @Model.Book.Category.Name</p>
+                                <p><strong>Available Copies:</strong> @Model.Book.Stock</p>
+                            </div>
+                        </div>
+
+                        <!-- Transaction Information -->
+                        <h4 class="mt-5 mb-4">
+                            <i class="fas fa-info-circle"></i> Transaction Details
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Borrow Date:</strong> @Model.BorrowDate.ToString("yyyy-MM-dd")</p>
+                                <p><strong>Due Date:</strong> @Model.ReturnDate.ToString("yyyy-MM-dd")</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>
+                                    <strong>Status:</strong>
+                                    @if (Model.Status == "Fine")
+                                    {
+                                        <span class="badge badge-red">
+                                            @Model.Status
+                                        </span>
+
+                                    }
+                                    else if(Model.Status == "Expired")
+                                    {
+                                        <span class="badge badge-blue">
+                                            @Model.Status
+                                        </span>
+                                    }
+                                    else if(Model.Status == "Pending")
+                                    {
+                                        <span class="badge badge-dark">
+                                            @Model.Status
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-@(Model.Status == "Returned" ? "success" : "warning")">
+                                            @Model.Status
+                                        </span>
+                                    }
+
+                                </p>
+                                <p><strong>Price:</strong> @Model.Price.ToString("C")</p>
+                                <p><strong>Fine Amount:</strong> @Model.FineAmount.ToString("C")</p>
+                                <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="mt-5 text-center">
+                            <a href="/Admin/Borrowin/Return/@Model.Id" class="btn btn-success">
+                                <i class="fas fa-undo"></i> Mark as Returned
+                            </a>
+                            <a href="/Admin/Borrowin/Expired/@Model.Id" class="btn btn-success" style="background-color:blue">
+                                <i class="fas fa-undo"></i> Mark as Expired
+                            </a>
+                            <a href="/Admin/Borrowin/Edit/@Model.Id" class="btn btn-dark" >
+                                <i class="fas fa-edit"></i> Edit Transaction
+                            </a>
+                            <a href="/Admin/Borrowin/Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </a>
+                            <a onClick=DeleteItem("/Admin/Borrowin/Delete/@Model.Id") class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete Transaction
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    function DeleteItem(url) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: "Delete",
+                    success: function (data) {
+                        if (data.success) {
+                            toastr["success"](data.message);
+
+                            // Redirect to /Admin/Borrowin/Index if success
+                            window.location.href = "/Admin/Borrowin/Index";
+
+                        } else {
+                            toastr["error"](data.message);
+                        }
+                    }
+
+                });
+            }
+        });
+    }
+</script>

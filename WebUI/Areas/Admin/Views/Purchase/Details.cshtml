@@ -1,0 +1,155 @@
+﻿@model PurchaseVMD
+
+@{
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Purchase";
+    ViewData["TitleView"] = "Details Purchases";
+}
+
+<form method="post" asp-action="OrderUpdate">
+    <div class="container">
+        <div>
+            <div class="container rounded p-2">
+                <div class="row">
+                    <div class="col-12 col-lg-6 pb-4">
+                        <div class="row">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span>PickUp Details</span>
+                            </h4>
+                        </div>
+                        <input hidden asp-for="@Model.PurchaseVMV.Id" />
+                        <div class="row my-1">
+                            <div class="col-4">Name</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" asp-for="@Model.PurchaseVMV.UserName" />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-4">Phone</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" asp-for="@Model.PurchaseVMV.Phone" />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-4">Address</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" asp-for="@Model.PurchaseVMV.Address" />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+
+                        <div class="row my-1">
+                            <div class="col-4">Email</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" asp-for="@Model.PurchaseVMV.Email" disabled />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-4">Purchase Date</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" value="@Model.PurchaseVMV.PurchaseDate.ToShortDateString()" />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+
+                        <div class="row my-1">
+                            <div class="col-4">Payment Date</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" value="@Model.PurchaseVMV.PurchaseDate.ToShortDateString()" />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-4">Purchase Status</div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" asp-for="@Model.PurchaseVMV.Status" />
+                                <span class="text-danager"></span>
+                            </div>
+                        </div>
+                        <input type="submit"  class="btn btn-primary form-control my-1" value="Update Pickup Detail" />
+                        <a class="btn btn-secondary form-control my-1" href="/Admin/Purchase/Index">Back</a>
+                    </div>
+                    <div class="col-12 col-lg-5 offset-lg-1">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Purchase Summary</span>
+                        </h4>
+                        <label class="btn btn-outline-primary form-control my-1">Order Status - @Model.PurchaseVMV.Status</label>
+                        <ul class="list-group mb-3">
+                           
+                            <li class="list-group-item d-flex justify-content-between p-2">
+                            <div class="row container">
+                            <div class="col-8">
+                            <h6 class="my-0 text-primary">@Model.PurchaseVMV.BookTitle</h6>
+                                        <small class="text-auted">Price : $@Model.PurchaseVMV.BookPrice </small><br />
+                            <small class="text-auted">Quantity : @Model.PurchaseVMV.PurchaseCount </small><br />
+                            </div>
+                            <div class="col-4 text-end">
+                            <p class="text-success">@Model.PurchaseVMV.BookPrice.ToString("c")</p>
+                            </div>
+                            </div>
+                            </li>
+
+                            <li class="list-group-item bg-dark">
+                                <div class="row container">
+                                    <div class="col-6">
+                                        <h5 class="text-white">TOTAL</h5>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <h5 class="text-white">@Model.PurchaseVMV.TotalPrice.ToString("c")</h5>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        @if (Model.PurchaseVMV.Status == "Pending")
+                        {
+                            <a asp-action="StartProcs" asp-area="Admin" asp-route-id="@Model.PurchaseVMV.Id" class="btn btn-primary">Start Processing</a>
+                        }
+                        @if (Model.PurchaseVMV.Status == "Processing")
+                        {
+                            <a asp-action="StartShip" asp-area="Admin" asp-route-id="@Model.PurchaseVMV.Id" class="btn btn-success">Start Purchasing</a>
+                        }
+                        @if (Model.PurchaseVMV.Status != "Cancelled" || Model.PurchaseVMV.Status != "Refund")
+                        {
+                            <a asp-action="CancelOrder" asp-area="Admin" asp-route-id="@Model.PurchaseVMV.Id" class="btn btn-danger" >Cancel Purchase</a>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section scripts {
+    <script>
+        function CheckData() {
+            if (document.getElementById("carrier").value == '') {
+                Swal.fire({
+                    title: "There is an error",
+                    text: "Please Enter Carrier Number!",
+                    icon: "error",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                });
+
+                return false;
+            }
+            if (document.getElementById("tarack").value == '') {
+                Swal.fire({
+                    title: "There is an error",
+                    text: "Please Enter Tracking Number!",
+                    icon: "error",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                });
+
+
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+

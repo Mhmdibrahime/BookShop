@@ -1,0 +1,206 @@
+﻿@model BookUpdateVM
+
+@{
+    ViewBag.Title = "Book";
+    ViewData["TitleView"] = "Edit Book";
+    Layout = "_Dashboard";
+}
+
+<div class="col-lg-7 mx-auto">
+
+    <form asp-action="Edit" enctype="multipart/form-data" method="post">
+        <div class="form-group mt-3">
+            <label asp-for="Title" class="form-label">Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Enter Title" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" placeholder="Enter Description" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="ISBN" class="form-label">ISBN</label>
+            <input asp-for="ISBN" class="form-control" placeholder="Enter ISBN" />
+            <span asp-validation-for="ISBN" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="PublishedYear" class="form-label">Published Year</label>
+            <input asp-for="PublishedYear" class="form-control" type="number" placeholder="Enter Published Year" />
+            <span asp-validation-for="PublishedYear" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="SalePrice" class="form-label">Sale Price</label>
+            <input asp-for="SalePrice" class="form-control" type="number" step="0.01" placeholder="Enter Sale Price" />
+            <span asp-validation-for="SalePrice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="RentPrice" class="form-label">Rent Price</label>
+            <input asp-for="RentPrice" class="form-control" type="number" step="0.01" placeholder="Enter Rent Price" />
+            <span asp-validation-for="RentPrice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="Stock" class="form-label">Stock</label>
+            <input asp-for="Stock" class="form-control" type="number" placeholder="Enter Stock" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="Cover" class="form-label">Cover Image</label>
+            <input asp-for="Cover" name="coverFile" type="file" class="form-control" id="coverImageInput" accept="image/*" />
+            <img id="coverImagePreview" style="display: none; margin-top: 10px; max-width: 200px;" />
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="CategoryId" class="form-label">Category</label>
+            <select asp-for="CategoryId" class="form-control">
+                <option disabled>@Model.CategoryName</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="PublisherId" class="form-label">Publisher</label>
+            <select asp-for="PublisherId" class="form-control">
+                <option disabled>@Model.PublisherName</option>
+                @foreach (var publisher in Model.Publishers)
+                {
+                    <option value="@publisher.Id">@publisher.Name</option>
+                }
+            </select>
+            <span asp-validation-for="PublisherId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="AuthorId" class="form-label">Authors</label>
+            <select asp-for="AuthorId" class="form-control">
+                <option disabled>@Model.AuthorName</option>
+                @foreach (var author in Model.Authors)
+                {
+                    <option value="@author.Id">@author.Name</option>
+                }
+            </select>
+
+            <span asp-validation-for="AuthorId" class="text-danger"></span>
+        </div>
+        <input asp-for="Id" type="hidden" />
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('coverImageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const preview = document.getElementById('coverImagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                const preview = document.getElementById('coverImagePreview');
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+}
+<style>
+   /* تحديث شامل لألوان الخلفية والنموذج */
+body {
+    background-color: #f2f4f7; /* لون خلفية أفتح */
+}
+
+.col-lg-7 {
+    background-color: #fff; /* خلفية بيضاء للنموذج */
+    border-radius: 12px; /* زوايا مستديرة أكثر */
+    padding: 30px; /* زيادة الحشو حول النموذج */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* زيادة الظل لتحسين البروز */
+    margin-bottom: 30px; /* مسافة أسفل النموذج */
+}
+
+h2 {
+    color: #333; /* لون نص داكن */
+    font-family: 'Poppins', sans-serif; /* خط عصري وجذاب */
+}
+
+.form-label {
+    font-weight: 600; /* زيادة سمك النص */
+    color: #4a4a4a; /* لون نص أغمق لتحسين الوضوح */
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 8px; /* زوايا مستديرة أكبر */
+    padding: 12px; /* زيادة الحشو داخل الحقول */
+    transition: all 0.3s ease; /* انتقال سلس لكل التغييرات */
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+    width: 48%;
+    padding: 12px; /* زيادة الحشو */
+    border-radius: 8px; /* زوايا مستديرة للأزرار */
+    font-size: 1.1em; /* تكبير حجم النص للأزرار */
+    font-family: 'Poppins', sans-serif; /* تحسين خط الأزرار */
+}
+
+.btn-primary {
+    background-color: #0069d9; /* تغيير لون الزر الأساسي */
+    border: none;
+    transition: background-color 0.3s ease; /* تأثير الانتقال عند التحويم */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* لون أغمق عند التحويم */
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* لون أغمق عند التحويم */
+}
+
+.text-danger {
+    font-size: 0.85em; /* حجم خط أصغر لرسائل الخطأ */
+    color: #e74c3c; /* لون أحمر بارز للخطأ */
+}
+
+/* تحسين عرض الصورة */
+#coverImagePreview {
+    max-width: 250px; /* عرض أكبر للصورة */
+    border: 2px solid #007bff;
+    border-radius: 8px; /* زوايا مستديرة أكثر للصورة */
+    margin-top: 15px;
+    display: none;
+}
+
+
+
+</style>

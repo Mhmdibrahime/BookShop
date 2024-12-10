@@ -1,0 +1,236 @@
+﻿@using Services.ShoppingCartServices.ShopingCartViewModels
+@model CartView
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .cart-container {
+        max-width: 850px;
+        margin: auto;
+        margin-top: 140px;
+        margin-bottom: 115px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-items-container {
+        max-height: 500px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #007bff #f1f1f1;
+    }
+
+        .cart-items-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .cart-items-container::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 10px;
+        }
+
+        .cart-items-container::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+    .cart-item {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        padding: 10px 0;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+        .cart-item:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+    .cart-header h2 {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .cart-footer {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eaeaea;
+    }
+
+    .btn-checkout {
+        font-size: 1.2em;
+        padding: 12px 30px;
+        border-radius: 5px;
+    }
+
+    .text-success {
+        color: #28a745;
+    }
+
+    .text-info {
+        color: #17a2b8;
+    }
+
+    .total-container {
+        font-weight: bold;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12 cart-container">
+        <form method="post" asp-action="CheckOut">
+            <div class="cart-header d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">Shopping Cart @(Model.shopingCarts.Count() == 0 ? "Is Empty" : "")</h2>
+                <a class="btn btn-outline-secondary" href="/Customer/Home">
+                    <i class="fas fa-shopping-bag me-2"></i> Continue Shopping
+                </a>
+            </div>
+
+            @if (Model.shopingCarts.Count() != 0)
+            {
+                <div class="cart-items-container">
+                    @foreach (var item in Model.shopingCarts)
+                    {
+                        <div class="cart-item d-flex align-items-center">
+                            <img src="~/covers/@(item.Book.Cover ?? "default/banner-image.png")" alt="@item.Book.Title" class="rounded" />
+
+                            <div class="cart-item-details flex-grow-1">
+                                <h4 class="text-dark">@item.Book.Title</h4>
+                                <p class="text-muted small">@Html.Raw(item.Book.Description)</p>
+                                @if (item.IsBorrowed)
+                                {
+                                    <p class="text-info fw-bold">Borrowed</p>
+                                }
+                                else
+                                {
+                                    <p class="text-success fw-bold">Purchased</p>
+                                }
+                            </div>
+
+                            <div class="cart-item-price text-center" style="width: 100px;">
+                                <h4 class="text-primary fw-bold">
+                                    @if (item.IsBorrowed)
+                                    {
+                                        @item.Book.RentPrice.ToString("C")
+                                    }
+                                    else
+                                    {
+                                        @item.Book.SalePrice.ToString("C")
+                                    }
+                                </h4>
+                                <p class="item-count text-muted">@item.Count x</p>
+                            </div>
+
+                            <div class="cart-item-actions d-flex gap-2">
+                                <button type="button" class="btn btn-outline-dark add-btn" style="width: 45px; height: 45px;" data-url="/Customer/Home/AddPlus/@item.Id">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-dark subtract-btn" style="width: 45px; height: 45px;" data-url="/Customer/Home/AddMins/@item.Id">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <a class="btn btn-outline-danger delete-btn" style="width: 45px; height: 45px;" data-url="/Customer/Home/DeleteItem/@item.Id">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="cart-footer d-flex justify-content-between align-items-center mt-4">
+                    <div class="total-container d-flex align-items-center">
+                        <span class="total-label fw-bold fs-5 text-dark">Total (USD):</span>
+                        <span id="total-price" class="total-amount ms-3 fs-4 text-primary fw-bold">$@Model.TotalPrice</span>
+                    </div>
+                    <button class="btn btn-success btn-lg btn-checkout" type="submit">
+                        <i class="fas fa-credit-card me-2"></i> CheckOut
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <img src="~/covers/default/pngwing.com.png" style="width:450px;" />
+                    <h4 class="text-muted mt-4">Your cart is empty</h4>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Increase item count
+            $('.add-btn').on('click', function () {
+                var url = $(this).data('url');
+                var itemContainer = $(this).closest('.cart-item');
+
+                $.post(url, function (response) {
+                    if (response.success) {
+                        itemContainer.find('.item-count').text(response.count + ' x');
+                        $('#total-price').text('$' + response.totalPrice.toFixed(2));
+                    } else {
+                        showError(response.message);
+                    }
+                });
+            });
+
+            // Decrease item count
+            $('.subtract-btn').on('click', function () {
+                var url = $(this).data('url');
+                var itemContainer = $(this).closest('.cart-item');
+
+                $.post(url, function (response) {
+                    if (response.count === 0) {
+                        itemContainer.remove();
+                        if ($('.cart-item').length === 0) {
+                            location.reload(); // Reload if cart is empty
+                        }
+                    } else {
+                        itemContainer.find('.item-count').text(response.count + ' x');
+                    }
+                    $('#total-price').text('$' + response.totalPrice.toFixed(2));
+                });
+            });
+
+            // Delete item
+            $('.delete-btn').on('click', function (event) {
+                event.preventDefault();
+                var url = $(this).data('url');
+                var itemContainer = $(this).closest('.cart-item');
+
+                $.post(url, function (response) {
+                    if (response.success) {
+                        itemContainer.remove();
+                        if ($('.cart-item').length === 0) {
+                            location.reload(); // Reload if cart is empty
+                        }
+                        $('#total-price').text('$' + response.totalPrice.toFixed(2));
+                    } else {
+                        showError(response.message);
+                    }
+                });
+            });
+
+            function showError(message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: message,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#d33',
+                });
+            }
+        });
+    </script>
+}

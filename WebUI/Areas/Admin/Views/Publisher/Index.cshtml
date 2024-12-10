@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PublisherUpdateVM>
+
+
+@{
+
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Publisher";
+    ViewData["TitleView"] = "View Publishers";
+
+}
+
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+
+<table id="mytable" style="width:100%" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Actions</th>
+
+            <th></th>
+        </tr>
+    </thead>
+</table>
+@section Scripts {
+    <script src="~/js/datatables/publisherdtb.js"></script>
+}

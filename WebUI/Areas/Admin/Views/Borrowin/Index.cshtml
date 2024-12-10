@@ -1,0 +1,260 @@
+﻿@using Entities.Domains
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<BorrowinTransaction>
+@{
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Borrowing";
+    ViewData["TitleView"] = "View Borrowings";
+    int numberId = 0;
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Borrowing Transactions</h2>
+
+                <!-- زر التذكيرات الجماعية -->
+                <div class="text-right mb-3">
+                    <button class="btn btn-warning" onclick="SendBulkReminders('/Admin/Borrowin/SendBulkReminder')">
+                        <i class="fas fa-bell"></i> Send Reminders to All Borrowers
+                    </button>
+                </div>
+
+                <!-- Filter Form -->
+                <form method="get" asp-action="Index">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select name="statusFilter" class="form-control" onchange="this.form.submit()">
+                                <option value="">Choose Filters</option>
+                                <option value="All">All</option>
+                                <option value="Expired">Expired</option>
+                                <option value="WithFine">With Fine</option>
+                                <option value="WithFineReturned">With Fine_Returned</option>
+                                <option value="UpcomingReturn">Upcoming Return (within 3 days)</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Borrowing Transactions Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Book Title</th>
+                                <th>Borrow Date</th>
+                                <th>Return Date</th>
+                                <th>Price</th>
+                                <th>Count</th>
+                                <th>Fine Amount</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.User.FullName</td>
+                                    <td>@item.Book.Title</td>
+                                    <td>@item.BorrowDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.ReturnDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.Price.ToString("C")</td>
+                                    <td>@item.Count</td>
+                                    <td>@item.FineAmount.ToString("C")</td>
+                                    <td>@item.TotalAmount.ToString("C")</td>
+                                    <td>
+                                        @if (item.Status == "Expired")
+                                        {
+                                            <span class="badge badge-blue">@item.Status</span>
+                                        }
+                                        else if (item.Status == "Fine")
+                                        {
+                                            <span class="badge badge-red">@item.Status</span>
+                                        }
+                                        else if(item.Status == "Pending")
+                                        {
+                                            <span class="badge badge-dark">@item.Status</span>
+
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-@(item.Status == "Returned" ? "success" : "warning")">@item.Status</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="text-primary mx-1" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="text-info mx-1" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a onclick="Send('/Admin/Borrowin/SendReminder', @item.Id)" class="text-warning mx-1" title="Send Reminder">
+                                            <i class="fas fa-bell"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-center">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { Page = page }),
+                                 new PagedListRenderOptions
+                        {
+                            LiElementClasses = new string[] { "page-item" },
+                            PageClasses = new string[] { "page-link" },
+                            UlElementClasses = new string[] { "pagination" }
+                        })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Custom CSS Styling -->
+<style>
+    .content {
+        background-color: #f4f6f9;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .table {
+        margin-top: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .thead-dark {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .badge {
+        font-size: 14px;
+        padding: 8px 12px;
+        font-weight: 500;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .btn-warning {
+        color: white;
+        background-color: #ffc107;
+        border: none;
+        padding: 8px 16px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .badge-red {
+        background-color: red;
+        color: white;
+    }
+    .badge-dark {
+        background-color: #ccc9c8;
+        color: white;
+    }
+
+    .badge-blue {
+        background-color: blue;
+        color: white;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-item .page-link {
+        color: #007bff;
+        border: 1px solid #007bff;
+    }
+
+    .pagination-container {
+        display: inline-block;
+    }
+
+    /* Responsive Table */
+    .table-responsive {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    function Send(url, transactionId) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: { transactionId: transactionId },
+            success: function (data) {
+                if (data.success) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                toastr.error("An error occurred while processing the request.");
+            }
+        });
+    }
+
+    function SendBulkReminders(url) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function (data) {
+                if (data.success) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                toastr.error("An error occurred while processing the bulk reminder request.");
+            }
+        });
+    }
+</script>

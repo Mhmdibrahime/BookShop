@@ -1,0 +1,225 @@
+﻿@using Entities.Domains
+@model BorrowinTransaction
+
+@{
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Borrowin";
+    ViewData["TitleView"] = "Edit Borrowing";
+    var statusValue = Model.Status ?? "Borrowed";
+
+}
+
+<!-- Custom CSS Styling -->
+<style>
+    .content {
+        background-color: #f4f6f9;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+   
+
+    .btn {
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    .form-control {
+        font-size: 16px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .badge-red {
+        background-color: red;
+        color: white; /* اختياري: لتحديد لون النص */
+    }
+
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .badge {
+        font-size: 14px;
+        padding: 8px 12px;
+        font-weight: 500;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+</style>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-lg">
+                   
+                    <div class="card-body">
+                        <!-- Form for Editing Borrowing Transaction -->
+                        <form method="post" asp-action="Edit">
+
+                            <!-- Borrower Information -->
+                            <h4 class="mb-4">
+                                <i class="fas fa-user"></i> Borrower Information
+                            </h4>
+                            <div class="form-group">
+                                <label for="FullName">Name</label>
+                                <input type="text" class="form-control" id="FullName" value="@Model.User.FullName" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                <input type="email" class="form-control" id="Email" value="@Model.User.Email" readonly>
+                            </div>
+
+                            <!-- Book Information -->
+                            <h4 class="mt-5 mb-4">
+                                <i class="fas fa-book"></i> Book Information
+                            </h4>
+                            <div class="form-group">
+                                <label for="BookTitle">Book Title</label>
+                                <input type="text" class="form-control" id="BookTitle" value="@Model.Book.Title" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ISBN">ISBN</label>
+                                <input type="text" class="form-control" id="ISBN" value="@Model.Book.ISBN" readonly>
+                            </div>
+
+                            <!-- Transaction Information -->
+                            <h4 class="mt-5 mb-4">
+                                <i class="fas fa-info-circle"></i> Transaction Details
+                            </h4>
+                            <div class="form-group">
+                                <label for="BorrowDate">Borrow Date</label>
+                                <input type="date" class="form-control" id="BorrowDate" value="@Model.BorrowDate.ToString("yyyy-MM-dd")" name="BorrowDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ReturnDate">Due Date</label>
+                                <input type="date" class="form-control" id="ReturnDate" value="@Model.ReturnDate.ToString("yyyy-MM-dd")" name="ReturnDate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Status">Status</label>
+                                <select class="form-control" id="Status" name="Status">
+                                    @if (Model.Status == "Borrowed")
+                                    {
+                                        <option value="Borrowed" selected>Borrowed</option>
+                                        <option value="Returned">Returned</option>
+                                        <option value="Fine">Fine</option>
+
+                                    }
+                                    @if (Model.Status == "Returned")
+                                    {
+                                        <option value="Borrowed">Borrowed</option>
+                                        <option value="Returned" selected>Returned</option>
+                                        <option value="Fine">Fine</option>
+                                        <option value="Pending">Pending</option>
+
+                                    }
+                                    @if(Model.Status == "Fine")
+                                    {
+                                        <option value="Borrowed">Borrowed</option>
+                                        <option value="Returned">Returned</option>
+                                        <option value="Fine" selected>Fine</option>
+                                        <option value="Pending">Pending</option>
+
+                                    }
+                                    @if (Model.Status == "Expired")
+                                    {
+                                        <option value="Expired" selected>Expired</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Borrowed">Borrowed</option>
+                                        <option value="Returned">Returned</option>
+                                        <option value="Fine">Fine</option>
+                                    }
+                                    @if (Model.Status == "Pending")
+                                    {
+                                        <option value="Pending" selected>Pending</option>
+                                        <option value="Expired">Expired</option>
+                                        <option value="Borrowed">Borrowed</option>
+                                        <option value="Returned">Returned</option>
+                                        <option value="Fine">Fine</option>
+                                    }
+                                    @if (Model.Status == null)
+                                    {
+                                        <option value="Borrowed">Borrowed</option>
+                                        <option value="Returned">Returned</option>
+                                        <option value="Fine">Fine</option>
+                                    }
+                                </select>
+                            </div>
+
+
+
+
+
+                            <div class="form-group">
+                                <label for="Price">Price</label>
+                                <input type="text" class="form-control" id="Price" value="@Model.Price.ToString("C")" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="FineAmount">Fine Amount</label>
+                                <input type="number" class="form-control" id="FineAmount" value="@Model.FineAmount" name="FineAmount" step="0.01">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="TotalAmount">Total Amount</label>
+                                <input type="number" class="form-control" id="TotalAmount" value="@Model.TotalAmount" name="TotalAmount" step="0.01" readonly>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="mt-5 text-center">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                                <a href="/Admin/Borrowin/Index" class="btn btn-danger">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

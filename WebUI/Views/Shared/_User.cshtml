@@ -1,0 +1,238 @@
+﻿@using Entities.Repositories
+@using System.Security.Claims
+@inject IUnitOfWork unitOfWork
+
+@{
+    var claimsIdentity = (ClaimsIdentity)User.Identity!;
+
+    var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+    var allCategories = await unitOfWork.GetRepository<Category>().GetAllAsync();
+
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Library</title>
+    <link rel="icon" type="image/x-icon" href="~/customer/assets/favicon.ico" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="~/customer/css/styles.css" rel="stylesheet" />
+    <link href="~/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebUI.styles.css" asp-append-version="true" />
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(to right, #333, #444);
+            transition: background 0.5s, box-shadow 0.5s;
+        }
+
+            .navbar.scrolled {
+                background: linear-gradient(to right, #3b3b4f, #5a5a7f);
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            }
+
+        .navbar-brand, .nav-link {
+            color: #f8f9fa !important;
+            font-weight: bold;
+        }
+
+            .navbar-brand:hover, .nav-link:hover {
+                color: #d1d1d1 !important;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: #fff;
+        }
+
+            header h1 {
+                font-size: 3.5rem;
+                font-family: 'Georgia', serif;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            }
+
+            header p {
+                font-size: 1.2rem;
+                font-weight: 300;
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+
+        /* Button Styles */
+        .btn-outline-primary {
+            color: #fff;
+            border-color: #6c63ff;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #6c63ff;
+                border-color: #4b4bff;
+                color: #fff;
+            }
+
+        .custom-dropdown-menu {
+            min-width: 200px;
+            max-height: 300px; /* أقصى ارتفاع للقائمة */
+            overflow-y: auto; /* إظهار شريط التمرير عند الحاجة */
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* تنسيق العنصر داخل القائمة */
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 5px;
+        }
+
+            /* تأثير التمرير على العنصر */
+            .category-item:hover {
+                background-color: #f1f3f5;
+                color: #0d6efd;
+            }
+
+        /* تخصيص العنصر الأخير (كل الأصناف) */
+        .all-categories {
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* الأيقونات داخل العناصر */
+        .category-item i {
+            font-size: 1.2em;
+            color: #0d6efd;
+        }
+
+        .all-categories i {
+            color: #6c757d;
+        }
+
+        /* الشريط الفاصل بين الأصناف */
+        .dropdown-divider {
+            margin: 4px 0;
+            border-color: #e9ecef;
+        }
+        /* Dropdown Styles */
+        .dropdown-menu {
+            background-color: #444;
+            border: none;
+            min-width: 250px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-dropdown-menu::-webkit-scrollbar {
+            width: 8px; /* عرض شريط التمرير */
+        }
+
+        .custom-dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f1f1; /* لون خلفية شريط التمرير */
+            border-radius: 8px; /* حواف دائرية للخلفية */
+        }
+
+        .custom-dropdown-menu::-webkit-scrollbar-thumb {
+            background: #0d6efd; /* لون مقبض شريط التمرير */
+            border-radius: 8px; /* حواف دائرية للمقبض */
+        }
+
+            .custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+                background: #0b5ed7; /* لون مقبض شريط التمرير عند التمرير */
+            }
+        .dropdown-item {
+            color: #f8f9fa;
+            transition: background 0.3s;
+        }
+
+            .dropdown-item:hover {
+                background-color: #6c757d;
+                color: #fff;
+            }
+
+        /* Footer Styles */
+        footer {
+            background-color: #222;
+            color: #aaa;
+        }
+
+            footer p {
+                font-size: 0.9rem;
+            }
+    </style>
+</head>
+<body>
+    <partial name="PartialToster" />
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#!">Library</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" href="/Customer/Home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Customer/Home/About">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="filterDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">Filter Books</a>
+                        <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="filterDropdown">
+                            @foreach (var item in allCategories)
+                            {
+                                <li>
+                                    <a class="dropdown-item category-item" href="/Customer/Home/Index?filter=@item.Name">
+                                        <i class="bi bi-tag-fill me-2 text-primary"></i> @item.Name
+                                    </a>
+                                </li>
+                            }
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item category-item all-categories" href="/Customer/Home/Index">
+                                    <i class="bi bi-list-ul me-2 text-secondary"></i> All Categories
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <partial name="_LoginPartial" />
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <form class="d-flex">
+                        <a class="btn btn-outline-primary" href="/Customer/Home/Cart" style="margin-bottom:10px">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">@(unitOfWork.GetRepository<ShopingCart>().GetAllAsync(u => u.ApplicationUserId == claim!.Value).GetAwaiter().GetResult().Count())</span>
+                        </a>
+                    </form>
+                    @await Html.PartialAsync("_NotificationPartial")
+                }
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/customer/js/scripts.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
